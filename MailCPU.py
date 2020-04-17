@@ -23,7 +23,8 @@ while not checkInternet():
     time.sleep(5)
 
 imapObj = imapclient.IMAPClient('imap.gmail.com', ssl = True)
-imapObj.login('ajaydyavathi@gmail.com', 'abvpekfnaadlsplh')
+# this is the mail that will login at target computer
+imapObj.login('your_email_address', 'yout_application_specific_password')
 imapObj.select_folder('INBOX', readonly = False)
 
 while True:
@@ -31,14 +32,14 @@ while True:
         imapObj.select_folder('INBOX', readonly = False)
         UIDs = imapObj.search(['UNSEEN'])
         if UIDs == []:
-            print('No new mail from dyavathiajay@gmail.com')
+            print('No new mail from mail_address_you_want_to_control_from')
             time.sleep(2)
         for each in UIDs:
             print(each)
             raw = imapObj.fetch([each], ['BODY[]'])
             msg = pyzmail.PyzMessage.factory(raw[each][b'BODY[]'])
             mfrom = msg.get_addresses('from')
-            if 'dyavathiajay@gmail.com' in str(mfrom):
+            if 'mail_address_you_want_to_control_from' in str(mfrom):
                 if msg.text_part != None:
                     mbody = msg.text_part.get_payload().decode(msg.text_part.charset)
                     print(mbody)
@@ -56,7 +57,7 @@ while True:
                             print('OS Terminated!')
                         
             else:
-                print('No mail from dyavathiajay@gmail.com')
+                print('No mail from mail_address_you_want_to_control_from')
             
     else:
         print('Waiting for internet connection...')
